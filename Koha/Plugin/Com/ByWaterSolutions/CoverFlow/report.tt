@@ -1,12 +1,14 @@
 <div class="koha-coverflow" [% IF (use_coce) %]style="min-height: 200px"[% END %]>
     <ul>
         [% FOREACH d IN data %]
-            [% IF d.isbn || d.localcover %]
+            [% IF d.isbn || d.localcover || d.cover_image_url %]
                 <li>
                     [% IF (coverlinks) %]
                         <a href="/cgi-bin/koha/opac-detail.pl?biblionumber=[% d.biblionumber %]">
                             [% IF d.localcover %]
                                 <img [% IF size_limit %]style="max-height:[% size_limit %]px;"[% END %] src="/cgi-bin/koha/opac-image.pl?biblionumber=[% d.biblionumber %]" />
+                            [% ELSIF d.cover_image_url %]
+                                <img [% IF size_limit %]style="max-height:[% size_limit %]px;"[% END %] src="[% d.cover_image_url %]" />
                             [% ELSIF (use_coce)  %]
                                 <div style="block" title="[% d.biblionumber %]" class="[% d.isbn %]" id="coce-thumbnail-preview"></div>
                             [% ELSE %]
@@ -20,6 +22,8 @@
                     [% ELSE %]
                         [% IF d.localcover %]
                             <img [% IF size_limit %]style="max-height:[% size_limit %]px;"[% END %] src="/cgi-bin/koha/opac-image.pl?biblionumber=[% d.biblionumber %]" />
+                        [% ELSIF d.cover_image_url %]
+                            <img [% IF size_limit %]style="max-height:[% size_limit %]px;"[% END %] src="[% d.cover_image_url %]" />
                         [% ELSIF (use_coce)  %]
                              <div style="block" title="[% d.biblionumber %]" class="[% d.isbn %]" id="coce-thumbnail-preview"></div>
                         [% ELSE %]

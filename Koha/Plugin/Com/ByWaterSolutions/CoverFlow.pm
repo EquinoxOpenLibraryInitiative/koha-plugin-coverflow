@@ -294,6 +294,15 @@ sub get_report {
             my $lines;
             $lines = $sth->fetchall_arrayref( {} );
             map { $_->{isbn} = GetNormalizedISBN( $_->{isbn} ) } @$lines;
+            foreach my $line (@$lines) {
+                my $biblio = Koha::Biblios->find( $line->{biblionumber} );
+                if ($biblio) {
+                    my $custom_cover_image_url = $biblio->custom_cover_image_url();
+                    if ($custom_cover_image_url) {
+                        $line->{cover_image_url} = $custom_cover_image_url;
+                    }
+                }
+            }
             $json_text = to_json($lines);
 
 #            if ($cache_active) {
